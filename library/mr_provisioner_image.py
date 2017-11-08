@@ -111,7 +111,7 @@ def run_module():
 
     # Determine if image is already uploaded
     headers = {'Authorization': module.params['token']}
-    url = urljoin(module.params['url'], "/api/v1/image?show_all=false")
+    url = urljoin(module.params['url'], "/api/v1/image?show_all=true")
     r = requests.get(url, headers=headers)
     if r.status_code != 200:
         module.fail_json(msg='Error fetching {}, HTTP {} {}'.format(url,
