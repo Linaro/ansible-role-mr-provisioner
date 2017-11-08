@@ -65,6 +65,8 @@ available but no tasks will run.
 Caveats
 -------
 
+Most of these behaviors can be fixed but in the meantime, FYI!
+
 - The preseed uploading is not yet implemented. The preseed named in
   mr_provisioner_preseed_name is expected to already exist in Mr. Provisioner.
 - Use unique image descriptions. The kernel and initrd files are only uploaded
@@ -72,6 +74,8 @@ Caveats
   not be re-uploaded. If it finds someone else's image with the same
   description, it will use it. If there are multiple images with the same
   description, it will use the first one found (non deterministically).
+- It does not retrieve the IP of the host from Mr. Provisioner. The IP should
+  be set in ansible inventory.
 
 See Also
 --------
