@@ -1,0 +1,6 @@
+---
+
+# By default, upload images and provision a host
+# Disable mr_provisioner_do_provision to skip the tasks
+# and just use the included modules
+mr_provisioner_do_provision: True

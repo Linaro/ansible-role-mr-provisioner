@@ -1,0 +1,45 @@
+- name: Verify variables are set
+  assert:
+    that: "{{ item }} is defined"
+  with_items:
+    - mr_provisioner_kernel_description
+    - mr_provisioner_initrd_description
+    - mr_provisioner_kernel_path
+    - mr_provisioner_initrd_path
+    - mr_provisioner_url
+    - mr_provisioner_auth_token
+    - mr_provisioner_preseed_name
+
+- name: Upload Kernel image
+  mr_provisioner_image:
+    description: "{{ mr_provisioner_kernel_description }}"
+    type: Kernel
+    path: "{{ mr_provisioner_kernel_path }}"
+    url: "{{ mr_provisioner_url }}"
+    token: "{{ mr_provisioner_auth_token }}"
+    public: true
+  run_once: true
+  register: kernel_image
+- debug: var=kernel_image
+- name: Upload Initrd image
+  mr_provisioner_image:
+    description: "{{ mr_provisioner_initrd_description }}"
+    type: Initrd
+    path: "{{ mr_provisioner_initrd_path }}"
+    url: "{{ mr_provisioner_url }}"
+    token: "{{ mr_provisioner_auth_token }}"
+    public: true
+  run_once: true
+  register: initrd_image
+- debug: var=initrd_image
+
+- name: Provision machine
+  mr_provisioner_machine_provision:
+    machine_name: "{{ inventory_hostname }}"
+    kernel_description: "{{ mr_provisioner_kernel_description }}"
+    initrd_description: "{{ mr_provisioner_initrd_description }}"
+    preseed_name: "{{ mr_provisioner_preseed_name }}"
+    url: "{{ mr_provisioner_url }}"
+    token: "{{ mr_provisioner_auth_token }}"
+  register: provision_machine
+- debug: var=provision_machine
