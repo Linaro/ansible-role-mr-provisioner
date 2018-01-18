@@ -37,6 +37,9 @@ options:
         description:
             - Image type. May be 'Kernel' or 'Initrd'.
         required: true
+    arch:
+        description: Image architecture. e.g. arm64, x86_64
+        required: true
     path:
         description: Local file path to image file.
         required: true
@@ -61,6 +64,7 @@ EXAMPLES = '''
 # Upload a linux kernel image
 - description: debian-installer staging build 471
   type: Kernel
+  arch: arm64
   path: ./builds/staging/427/linux
   url: http://172.27.80.1:5000/
   token: "{{ provisioner_auth_token }}"
@@ -75,6 +79,7 @@ RETURN = '''
   user: User that owns the image
   known_good: true/false
   public: true/false
+  arch: arm64
 '''
 
 from ansible.module_utils.basic import AnsibleModule
@@ -85,6 +90,7 @@ def run_module():
     module_args = dict(
         description=dict(type='str', required=True),
         type=dict(type='str', required=True),
+        arch=dict(type='str', required=True),
         path=dict(type='str', required=True),
         url=dict(type='str', required=True),
         token=dict(type='str', required=True),
@@ -118,7 +124,8 @@ def run_module():
                          r.status_code, r.reason), **result)
     for image in r.json():
         if (image['description'] == module.params['description'] and
-            image['type'] == module.params['type']):
+            image['type'] == module.params['type'] and
+            image['arch'] == module.params['arch']):
                 #XXX Not implemented: modify existing image
                 result['json'] = image
                 module.exit_json(**result)
@@ -139,6 +146,7 @@ def run_module():
     data = {'q': json.dumps({
                  'description': module.params['description'],
                  'type': module.params['type'],
+                 'arch': module.params['arch'],
                  'known_good': module.params['known_good'],
                  'public': module.params['public'],
              })

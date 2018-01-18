@@ -40,6 +40,12 @@ options:
     initrd_description:
         description: initrd description
         required: true
+    arch:
+        description: Image architecture. e.g. arm64, x86_64
+        required: true
+    subarch:
+        description: Machine subarchitecture. e.g. efi, bios
+        required: true
     preseed_name:
         description: name of preseed to use.
         required: true
@@ -88,7 +94,7 @@ def machine_provision(url, token, machine_id):
 
 
 def set_machine_parameters(url, token, machine_id, initrd_id=None,
-                           kernel_id=None, preseed_id=None):
+                           kernel_id=None, preseed_id=None, subarch=None):
     """ Set parameters on machine specified by machine_id """
     headers = {'Authorization': token}
     url = urljoin(url, "/api/v1/machine/{}".format(machine_id))
@@ -100,6 +106,8 @@ def set_machine_parameters(url, token, machine_id, initrd_id=None,
         parameters['kernel_id'] = kernel_id
     if preseed_id:
         parameters['preseed_id'] = preseed_id
+    if subarch:
+        parameters['subarch'] = subarch
     parameters['netboot_enabled'] = True
     parameters['kernel_opts'] = ""
 
@@ -145,7 +153,7 @@ def get_preseed_by_name(url, token, preseed_name):
     raise ProvisionerError('Error no preseed found with name "{}"'.
             format(preseed_name))
 
-def get_image_by_description(url, token, image_type, description):
+def get_image_by_description(url, token, image_type, description, arch):
     """ Look up image by description """
     headers = {'Authorization': token}
     url = urljoin(url, "/api/v1/image?show_all=true")
@@ -156,7 +164,8 @@ def get_image_by_description(url, token, image_type, description):
     found_image = True
     for image in r.json():
         if (image['description'] == description and
-            image['type'] == image_type):
+            image['type'] == image_type and
+            image['arch'] == arch):
             return image
     msg = "Error finding image of type '{}' and description '{}'".format(
         image_type, description)
@@ -169,6 +178,8 @@ def run_module():
         machine_name=dict(type='str', required=True),
         kernel_description=dict(type='str', required=True),
         initrd_description=dict(type='str', required=True),
+        arch=dict(type='str', required=True),
+        subarch=dict(type='str', required=True),
         preseed_name=dict(type='str', required=True),
         kernel_options=dict(type='str', required=False),
         url=dict(type='str', required=True),
@@ -203,11 +214,13 @@ def run_module():
         kernel_id = get_image_by_description(module.params['url'],
                                          module.params['token'],
                                          "Kernel",
-                                         module.params['kernel_description'])
+                                         module.params['kernel_description'],
+                                         module.params['arch'])
         initrd_id = get_image_by_description(module.params['url'],
                                          module.params['token'],
                                          "Initrd",
-                                         module.params['initrd_description'])
+                                         module.params['initrd_description'],
+                                         module.params['arch'])
     except ProvisionerError, e:
         module.fail_json(msg=str(e), **result)
     result['debug']['kernel_id'] = kernel_id
@@ -229,7 +242,8 @@ def run_module():
                                       machine_id=machine['id'],
                                       initrd_id=initrd_id['id'],
                                       kernel_id=kernel_id['id'],
-                                      preseed_id=preseed['id'])
+                                      preseed_id=preseed['id'],
+                                      subarch=module.params['subarch'])
 
     except ProvisionerError, e:
         module.fail_json(msg=str(e), **result)

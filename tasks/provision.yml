@@ -9,11 +9,14 @@
     - mr_provisioner_url
     - mr_provisioner_auth_token
     - mr_provisioner_preseed_name
+    - mr_provisioner_arch
+    - mr_provisioner_subarch
 
 - name: Upload Kernel image
   mr_provisioner_image:
     description: "{{ mr_provisioner_kernel_description }}"
     type: Kernel
+    arch: "{{ mr_provisioner_arch }}"
     path: "{{ mr_provisioner_kernel_path }}"
     url: "{{ mr_provisioner_url }}"
     token: "{{ mr_provisioner_auth_token }}"
@@ -25,6 +28,7 @@
   mr_provisioner_image:
     description: "{{ mr_provisioner_initrd_description }}"
     type: Initrd
+    arch: "{{ mr_provisioner_arch }}"
     path: "{{ mr_provisioner_initrd_path }}"
     url: "{{ mr_provisioner_url }}"
     token: "{{ mr_provisioner_auth_token }}"
@@ -38,6 +42,8 @@
     machine_name: "{{ inventory_hostname }}"
     kernel_description: "{{ mr_provisioner_kernel_description }}"
     initrd_description: "{{ mr_provisioner_initrd_description }}"
+    arch: "{{ mr_provisioner_arch }}"
+    subarch: "{{ mr_provisioner_subarch }}"
     preseed_name: "{{ mr_provisioner_preseed_name }}"
     url: "{{ mr_provisioner_url }}"
     token: "{{ mr_provisioner_auth_token }}"
