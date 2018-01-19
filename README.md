@@ -27,6 +27,9 @@ required:
 - ``mr_provisioner_url``: Mr. Provisioner URL in the form of i.e.
   'http://172.27.80.1:5000'
 - ``mr_provisioner_auth_token``: Auth token from Mr. Provisioner.
+- ``mr_provisioner_arch``: Image architecture.
+- ``mr_provisioner_subarch``: Machine subarchitecture.
+
 
 Usage
 -----
@@ -40,6 +43,8 @@ Usage
         mr_provisioner_url: "http://172.27.80.1:5000"
         mr_provisioner_auth_token: "MYSUPERFANCYTOKENFROMPROVISIONER"
         mr_provisioner_preseed_name: "danrue/erp-17.08-debian-20170727.567664d4"
+        mr_provisioner_arch: "arm64"
+        mr_provisioner_subarch: "efi"
       roles:
         - role: Linaro.mr-provisioner
 
