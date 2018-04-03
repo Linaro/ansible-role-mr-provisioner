@@ -43,6 +43,7 @@ Usage
         mr_provisioner_url: "http://172.27.80.1:5000"
         mr_provisioner_auth_token: "MYSUPERFANCYTOKENFROMPROVISIONER"
         mr_provisioner_preseed_name: "danrue/erp-17.08-debian-20170727.567664d4"
+        mr_provisioner_preseed_path: "./preseeds/erp-17.08-generic"
         mr_provisioner_arch: "arm64"
         mr_provisioner_subarch: "efi"
       roles:
@@ -72,8 +73,6 @@ Caveats
 
 Most of these behaviors can be fixed but in the meantime, FYI!
 
-- The preseed uploading is not yet implemented. The preseed named in
-  mr_provisioner_preseed_name is expected to already exist in Mr. Provisioner.
 - Use unique image descriptions. The kernel and initrd files are only uploaded
   once. If they're changed locally but the description is the same, they will
   not be re-uploaded. If it finds someone else's image with the same
