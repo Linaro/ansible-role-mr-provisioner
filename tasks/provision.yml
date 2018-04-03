@@ -54,6 +54,7 @@
   mr_provisioner_machine_provision:
     machine_name: "{{ inventory_hostname }}"
     kernel_description: "{{ mr_provisioner_kernel_description }}"
+    kernel_options: "{{ mr_provisioner_kernel_options | default('') }}"
     initrd_description: "{{ mr_provisioner_initrd_description }}"
     arch: "{{ mr_provisioner_arch }}"
     subarch: "{{ mr_provisioner_subarch }}"
