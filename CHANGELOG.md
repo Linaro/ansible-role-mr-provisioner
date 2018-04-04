@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.0.4 (2018-04-03)
+
+Feature:
+
+  - Add support for upload preseed files.
+
 ## v1.0.3 (2018-02-08)
 
 Improvement:

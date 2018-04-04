@@ -9,6 +9,7 @@
     - mr_provisioner_url
     - mr_provisioner_auth_token
     - mr_provisioner_preseed_name
+    - mr_provisioner_preseed_path
     - mr_provisioner_arch
     - mr_provisioner_subarch
 
@@ -36,7 +37,19 @@
   run_once: true
   register: initrd_image
 - debug: var=initrd_image
-
+- name: Upload Preseed
+  mr_provisioner_preseed:
+    name: "{{ mr_provisioner_preseed_name }}"
+    description: "{{ mr_provisioner_preseed_description | default('') }}"
+    type: "{{ mr_provisioner_preseed_type | default('preseed')}}"
+    path: "{{ mr_provisioner_preseed_path }}"
+    url: "{{ mr_provisioner_url }}"
+    token: "{{ mr_provisioner_auth_token }}"
+    public: "{{ mr_provisioner_preseed_public | default(true)}}"
+    known_good: "{{ mr_provisioner_preseed_known_good | default(true)}}"
+  run_once: true
+  register: preseed
+- debug: var=preseed
 - name: Provision machine
   mr_provisioner_machine_provision:
     machine_name: "{{ inventory_hostname }}"
