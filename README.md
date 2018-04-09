@@ -16,6 +16,7 @@ tasks. This is useful if all you want is the modules.
 
 If mr_provisioner_do_provision is set, all of the following variables are
 required:
+- ``mr_provisioner_machine_name``: Machine's name.
 - ``mr_provisioner_kernel_description``: Unique kernel description to use in
   provisioner.
 - ``mr_provisioner_initrd_description``: Unique initrd description to use in
@@ -29,13 +30,14 @@ required:
 - ``mr_provisioner_auth_token``: Auth token from Mr. Provisioner.
 - ``mr_provisioner_arch``: Image architecture.
 - ``mr_provisioner_subarch``: Machine subarchitecture.
-
+- ``machine_user``: Machine SSH user that wait_for_connection should try authenticating as.
 
 Usage
 -----
 
-    - hosts: all
+    - hosts: provision_this_machine
       vars:
+	mr_provisioner_machine_name: "if you don't assign it, it will use inventory hostname"
         mr_provisioner_kernel_description: "debian-installer staging build 495"
         mr_provisioner_initrd_description: "debian-installer staging build 495"
         mr_provisioner_kernel_path: "./builds/debian-staging/495/linux"
@@ -46,16 +48,27 @@ Usage
         mr_provisioner_preseed_path: "./preseeds/erp-17.08-generic"
         mr_provisioner_arch: "arm64"
         mr_provisioner_subarch: "efi"
+	machine_user: "myspecialuser"
       roles:
         - role: Linaro.mr-provisioner
+
+    - hosts: target
+      gather_facts: no
+      tasks:
+		- name: Wait for host for 3600 seconds, but only start checking after 60.
+		  wait_for_connection:
+			delay: 60
+			timeout: 3600
 
 Role Modules
 ------------
 
-This role contains two ansible modules:
-- ``mr_provisioner_image``: Handle uploading image files to Mr. Provisioner.
-- ``mr_provisioner_machine_provision``: Handle provisioning a host in Mr.
+This role contains four ansible modules:
+- ``mr_provisioner_image``: Handles uploading image files to Mr. Provisioner.
+- ``mr_provisioner_machine_provision``: Handles provisioning a host in Mr.
   Provisioner.
+- ``mr_provisioner_preseed``: Handles uploading preseed files to Mr. Provisioner.
+- ``mr_provisioner_get_ip``: Handles fetching the provisioned machine's IP from Mr. Provisioner.
 
 By default, these modules are used by the tasks in the role. They may also be
 used outside the role if the included role tasks are not suitable.
@@ -78,8 +91,6 @@ Most of these behaviors can be fixed but in the meantime, FYI!
   not be re-uploaded. If it finds someone else's image with the same
   description, it will use it. If there are multiple images with the same
   description, it will use the first one found (non deterministically).
-- It does not retrieve the IP of the host from Mr. Provisioner. The IP should
-  be set in ansible inventory.
 
 See Also
 --------
