@@ -6,8 +6,15 @@ import requests
 from future.standard_library import install_aliases
 install_aliases()
 
-from urllib.parse import urljoin
-from urllib import quote
+try:
+    from urlparse import urljoin    #Python2
+except ImportError:
+    from urllib.parse import urljoin    #Python3
+
+try:
+    from urllib import quote
+except ImportError:
+    from urllib.parse import quote
 
 ANSIBLE_METADATA = {
     'metadata_version': '1.1',
@@ -205,7 +212,7 @@ def run_module():
         machine = get_machine_by_name(module.params['url'],
                                       module.params['token'],
                                       module.params['machine_name'])
-    except ProvisionerError, e:
+    except ProvisionerError as e:
         module.fail_json(msg=str(e), **result)
     result['debug']['machine'] = machine
 
@@ -221,7 +228,7 @@ def run_module():
                                          "Initrd",
                                          module.params['initrd_description'],
                                          module.params['arch'])
-    except ProvisionerError, e:
+    except ProvisionerError as e:
         module.fail_json(msg=str(e), **result)
     result['debug']['kernel_id'] = kernel_id
     result['debug']['initrd_id'] = initrd_id
@@ -231,7 +238,7 @@ def run_module():
         preseed = get_preseed_by_name(module.params['url'],
                                       module.params['token'],
                                       module.params['preseed_name'])
-    except ProvisionerError, e:
+    except ProvisionerError as e:
         module.fail_json(msg=str(e), **result)
     result['debug']['preseed'] = preseed
 
@@ -245,7 +252,7 @@ def run_module():
                                       preseed_id=preseed['id'],
                                       subarch=module.params['subarch'])
 
-    except ProvisionerError, e:
+    except ProvisionerError as e:
         module.fail_json(msg=str(e), **result)
     result['machine_state'] = machine_state
 
@@ -255,7 +262,7 @@ def run_module():
                                       module.params['token'],
                                       machine_id=machine['id'])
 
-    except ProvisionerError, e:
+    except ProvisionerError as e:
         module.fail_json(msg=str(e), **result)
     result['machine_provision'] = machine_state
 
