@@ -42,7 +42,7 @@
     name: "{{ mr_provisioner_preseed_name }}"
     description: "{{ mr_provisioner_preseed_description | default('') }}"
     type: "{{ mr_provisioner_preseed_type | default('preseed')}}"
-    path: "{{ mr_provisioner_preseed_path }}"
+    path: "{{ mr_provisioner_preseed_path | default('')}}"
     url: "{{ mr_provisioner_url }}"
     token: "{{ mr_provisioner_auth_token }}"
     public: "{{ mr_provisioner_preseed_public | default(true)}}"
