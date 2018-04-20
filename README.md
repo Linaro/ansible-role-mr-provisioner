@@ -30,14 +30,13 @@ required:
 - ``mr_provisioner_auth_token``: Auth token from Mr. Provisioner.
 - ``mr_provisioner_arch``: Image architecture.
 - ``mr_provisioner_subarch``: Machine subarchitecture.
-- ``machine_user``: Machine SSH user that wait_for_connection should try authenticating as.
 
 Usage
 -----
 
     - hosts: provision_this_machine
       vars:
-	mr_provisioner_machine_name: "if you don't assign it, it will use inventory hostname"
+        mr_provisioner_machine_name: "if you don't assign it, it will use inventory hostname"
         mr_provisioner_kernel_description: "debian-installer staging build 495"
         mr_provisioner_initrd_description: "debian-installer staging build 495"
         mr_provisioner_kernel_path: "./builds/debian-staging/495/linux"
@@ -48,17 +47,15 @@ Usage
         mr_provisioner_preseed_path: "./preseeds/erp-17.08-generic"
         mr_provisioner_arch: "arm64"
         mr_provisioner_subarch: "efi"
-	machine_user: "myspecialuser"
       roles:
         - role: Linaro.mr-provisioner
 
-    - hosts: target
-      gather_facts: no
+    - hosts: mr_provisoner_hosts
       tasks:
-		- name: Wait for host for 3600 seconds, but only start checking after 60.
-		  wait_for_connection:
-			delay: 60
-			timeout: 3600
+        - name: Wait for host for 3600 seconds, but only start checking after 60.
+          wait_for_connection:
+            delay: 60
+            timeout: 3600
 
 Role Modules
 ------------

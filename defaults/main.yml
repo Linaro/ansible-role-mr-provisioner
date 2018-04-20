@@ -1,6 +1,8 @@
----
-
 # By default, upload images and provision a host
 # Disable mr_provisioner_do_provision to skip the tasks
 # and just use the included modules
 mr_provisioner_do_provision: True
+
+# By default, do not fetch the ip of the provisioned machine
+# Instead defer it to the host file, as legacy interface does.
+mr_provisioner_machine_name: False

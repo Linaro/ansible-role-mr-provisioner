@@ -56,7 +56,6 @@
     kernel_description: "{{ mr_provisioner_kernel_description }}"
     kernel_options: "{{ mr_provisioner_kernel_options | default('') }}"
     initrd_description: "{{ mr_provisioner_initrd_description }}"
-    kernel_options: "{{ mr_provisioner_kernel_options|default('') }}"
     arch: "{{ mr_provisioner_arch }}"
     subarch: "{{ mr_provisioner_subarch }}"
     preseed_name: "{{ mr_provisioner_preseed_name }}"
@@ -64,19 +63,3 @@
     token: "{{ mr_provisioner_auth_token }}"
   register: provision_machine
 - debug: var=provision_machine
-
-- name: Get IP of provisioned machine
-  mr_provisioner_get_ip:
-    mrp_url: "{{ mr_provisioner_url }}"
-    mrp_token: "{{ mr_provisioner_auth_token }}"
-    machine_name: "{{ mr_provisioner_machine_name }}"
-    interface_name: "{{ mr_provisioner_interface_name|default('eth1') }}"
-  register: get_ip
-- debug: var=get_ip
-
-- name: Add provisioned machine as host
-  add_host:
-          name: "{{ get_ip['ip'] }}"
-          groups: target
-          ansible_user: "{{ machine_user | default('root') }}"
-  when: get_ip['ip'] is defined

@@ -1,3 +1,13 @@
 - include: provision.yml
   when: mr_provisioner_do_provision
   delegate_to: localhost
+- debug: var=mr_provisioner_machine_name
+
+- include: add_host.yml
+  when: mr_provisioner_machine_name != False
+
+- name: Wait for host for 3600 seconds, but only start checking after 60 seconds
+  wait_for_connection:
+    delay: 60
+    timeout: 3600
+  when: mr_provisioner_do_provision and not mr_provisioner_machine_name
