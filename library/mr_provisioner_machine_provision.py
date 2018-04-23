@@ -60,7 +60,7 @@ options:
         description: kernel boot command line
         required: false
     url:
-        description: url to provisioner instance in the form of http://172.27.80.1:5000/
+        description: url to provisioner instance in the form of http://192.168.0.3:5000/
         required: true
     token:
         description: Mr. Provisioner auth token

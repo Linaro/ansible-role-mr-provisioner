@@ -38,7 +38,7 @@ options:
         description: Local file path to preseed file.
         required: true
     url:
-        description: url to provisioner instance in the form of http://172.27.80.1:5000/
+        description: url to provisioner instance in the form of http://192.168.0.3:5000/
         required: true
     token:
         description: Mr. Provisioner auth token
@@ -58,13 +58,13 @@ EXAMPLES = '''
 # Upload a preseed file to a MrProvisioner install.
 - name: moonshot-generic-preseed
   path: ./preseeds/moonshot-generic.preseed.txt
-  url: http://172.27.80.1:5000/
+  url: http://192.168.0.3:5000/
   token: "{{ provisioner_auth_token }}"
 
 # Uses existing file from MrProvisioner
 - name: test_preseed
   path: ''
-  url: http://172.0.0.1:5000
+  url: http://192.168.0.3:5000
   token: "{{ fancy_token }}"
 '''
 

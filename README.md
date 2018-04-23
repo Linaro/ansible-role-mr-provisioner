@@ -1,7 +1,7 @@
 Mr. Provisioner
 ===============
 
-Provision a host using [Mr. Provisioner](https://github.com/Linaro/mr-provisioner).
+Provision a host using [Mr. Provisioner](https://github.com/mr-provisioner/mr-provisioner).
 
 This role will upload a kernel and initrd file to Mr. Provisioner, then
 configure the machine (based on inventory_hostname) to use the given kernel,
@@ -25,7 +25,7 @@ required:
 - ``mr_provisioner_initrd_path``: Local path to initrd file for uploading to
   provisioner.
 - ``mr_provisioner_url``: Mr. Provisioner URL in the form of i.e.
-  'http://172.27.80.1:5000'
+  'http://192.168.0.3:5000'
 - ``mr_provisioner_auth_token``: Auth token from Mr. Provisioner.
 - ``mr_provisioner_arch``: Image architecture.
 - ``mr_provisioner_subarch``: Machine subarchitecture.
@@ -40,7 +40,7 @@ Usage
         mr_provisioner_initrd_description: "debian-installer staging build 495"
         mr_provisioner_kernel_path: "./builds/debian-staging/495/linux"
         mr_provisioner_initrd_path: "./builds/debian-staging/495/initrd.gz"
-        mr_provisioner_url: "http://172.27.80.1:5000"
+        mr_provisioner_url: "http://192.168.0.3:5000"
         mr_provisioner_auth_token: "MYSUPERFANCYTOKENFROMPROVISIONER"
         mr_provisioner_preseed_name: "danrue/erp-17.08-debian-20170727.567664d4"
         mr_provisioner_preseed_path: "./preseeds/erp-17.08-generic"

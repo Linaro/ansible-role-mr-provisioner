@@ -47,7 +47,7 @@ options:
         description: Local file path to image file.
         required: true
     url:
-        description: url to provisioner instance in the form of http://172.27.80.1:5000/
+        description: url to provisioner instance in the form of http://192.168.0.3:5000/
         required: true
     token:
         description: Mr. Provisioner auth token
@@ -69,7 +69,7 @@ EXAMPLES = '''
   type: Kernel
   arch: arm64
   path: ./builds/staging/427/linux
-  url: http://172.27.80.1:5000/
+  url: http://192.168.0.3:5000/
   token: "{{ provisioner_auth_token }}"
 '''
 
@@ -134,7 +134,7 @@ def run_module():
                 module.exit_json(**result)
 
     # Image does not yet exist. Upload it.
-    # curl -X POST "http://172.27.80.1:5000/api/v1/image"
+    # curl -X POST "http://192.168.0.3:5000/api/v1/image"
     # -H "accept: application/json"
     # -H "Authorization: DEADBEEF"
     # -H "content-type: multipart/form-data"
