@@ -116,9 +116,6 @@ class IPGetter(object):
 
         for i in interfaces:
             if str(i['identifier']) == self.interface:
-                if str(i['config_type_v4']) == 'dynamic-reserved' and str(i['configured_ipv4']):
-                    return i['configured_ipv4']
-                else:
                     return i['lease_ipv4']
 
 def get_machine_by_name(mrp_token, mrp_url, machine_name):
