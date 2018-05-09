@@ -10,4 +10,4 @@
   wait_for_connection:
     delay: 60
     timeout: 3600
-  when: mr_provisioner_do_provision and mr_provisioner_machine_name != inventory_hostname
+  when: mr_provisioner_do_provision and mr_provisioner_machine_name == inventory_hostname
