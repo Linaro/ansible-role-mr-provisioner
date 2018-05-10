@@ -57,7 +57,6 @@
     kernel_description: "{{ mr_provisioner_kernel_description }}"
     kernel_options: "{{ mr_provisioner_kernel_options | default('') }}"
     initrd_description: "{{ mr_provisioner_initrd_description }}"
-    kernel_options: "{{ mr_provisioner_kernel_options|default('') }}"
     arch: "{{ mr_provisioner_arch }}"
     subarch: "{{ mr_provisioner_subarch }}"
     preseed_name: "{{ mr_provisioner_preseed_name }}"
